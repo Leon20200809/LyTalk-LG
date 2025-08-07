@@ -2,6 +2,7 @@
 
 🎈 WordPress対応の軽量チャットプラグイン  
 **管理者が在席中だったら返事が返ってくるかもしれない気軽なチャットUIを実現。**
+ユーザーがライト（気軽）にWEBページの担当とコミュニケーション。動作もライト（軽量）でLyTalk★（らいとーく）。
 
 ---
 
@@ -51,12 +52,19 @@
 
 ---
 
-## 🛠️ 開発メモ
+## 🛠 開発環境
 
-- DBテーブルは有効化時に自動作成（`ly_messages`, `ly_admin_status`）
-- フォーム送信は現在 POST + リロード方式（今後 Ajax化予定）
-- 管理者判定は `current_user_can('manage_options')` を使用
+- WordPress プラグイン開発（WP-CLIテンプレートベース）
+- `wp scaffold plugin lytalk-lg` で雛形生成し、機能ごとにディレクトリを整理
+- Ajax通信 / jQueryポーリング / ショートコード対応 / 非ログイン投稿可
 ---
+
+## 🔐 セキュリティ対策
+
+- WordPressのNonceを用いて、Ajax通信の正当性を検証
+- `wp_localize_script()` でJS側に `nonce` を渡し、PHP側では `check_ajax_referer()` にて確認
+- 投稿データはサニタイズ処理を通して、XSSやSQLインジェクションを防止
+
 
 ## ⚙️ 技術スタックと方針
 
@@ -71,7 +79,7 @@
 
 ## 🧩 今後の予定
 
-- [ ] Ajax対応でリロードなし送信＆表示
+- [✓] Ajax対応でリロードなし送信＆表示
 - [ ] 管理者による在席／離席トグル
 - [ ] localStorage によるユーザー情報保持
 - [ ] メッセージ削除機能（投稿者のみ）
@@ -88,5 +96,5 @@
 
 ## 🧑‍💻 開発者
 
-Leon.C:https://lazygenius.dev  
+Leon.C: https://lazygenius.dev  
 GitHub: [@Leon20200809](https://github.com/Leon20200809)
