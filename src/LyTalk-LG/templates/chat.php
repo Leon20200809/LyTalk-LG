@@ -1,37 +1,23 @@
 <div id="lightalk-chat">
-    <div id="chat-log" style="height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 1rem;">
-        <h3>投稿一覧（簡易）</h3>
-        <?php
-        global $wpdb;
-        $table = $wpdb->prefix . 'ly_messages';
-
-        $messages = $wpdb->get_results("
-            SELECT * FROM $table
-            ORDER BY created_at DESC
-            LIMIT 10
-        ");
-
-        if ($messages) {
-            foreach (array_reverse($messages) as $msg) {
-                $color = esc_attr($msg->user_color ?: '#000');
-                $name  = esc_html($msg->user_name);
-                $text  = esc_html($msg->message);
-                $label = $msg->is_admin ? '<strong>[管理者]</strong>' : '';
-
-                echo "<div style='margin-bottom: 6px;'>";
-                echo "<span style='color: $color;'>$label $name:</span> $text";
-                echo "</div>";
-            }
-        } else {
-            echo '<p>まだメッセージはありません。</p>';
-        }
-        ?>
+    <div id="chat-log" class="chat-log mb-2">
+        
     </div>
 
-    <form method="POST">
-        <input type="text" name="user_name" placeholder="名前" required>
-        <input type="color" name="user_color" value="#2196f3">
-        <input type="text" name="chat_message" placeholder="メッセージ" required>
-        <button type="submit" name="lightalk_submit">送信</button>
+    <form id="chat-form" class="chat-form">
+        <div class="d-flex mb-2">
+            <label>識別色：<input type="color" id="user-color" name="user_color" value="#2196f3"></label>
+            <input type="text" id="user-name" name="user_name" placeholder="お名前" required maxlength="20">
+        </div>
+
+        <div class=".d-flex-center mb-2">
+            <input type="text" id="chat-message" name="chat_message" placeholder="知りたい事を送ってください" required maxlength="100">
+        </div>
+        <div class="d-flex-center">
+            <p class="warning-text">※100文字まで送信できます。個人情報は入力しないようお願いします。</p>
+            <button type="submit" name="lytalk_submit">送信</button>
+        </div>
+        
     </form>
 </div>
+
+<div id="visible-btn">▲ チャットを閉じる</div>

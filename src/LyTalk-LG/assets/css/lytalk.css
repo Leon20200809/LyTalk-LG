@@ -1,0 +1,108 @@
+/* リセット */
+*{
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+/* ユーティリティ */
+.d-flex{
+	display: flex;
+	justify-content: flex-start;
+	gap: 1rem;
+}
+.d-flex-center{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+}
+
+.mb-2{margin-bottom: 1rem;}
+.mb-4{margin-bottom: 2rem;}
+
+/* 表示非表示ボタン */
+#visible-btn{
+	position: fixed;
+	right: 0; bottom: 50px;
+	background-color: blueviolet;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	z-index: 105;
+	font-size: 0.85rem;
+	font-weight: bold;
+	color: aliceblue;
+	border-radius: 10px 0 0 10px;
+	padding: 0.5rem;
+
+}
+#visible-btn::after{
+
+}
+
+#visible-btn:hover{
+	transform: scale(1.05);
+}
+
+#lightalk-chat.isInvisible{
+	display: none;
+}
+
+#lightalk-chat{
+	position: fixed;
+	right: 10px; bottom: 100px;
+	z-index: 100;
+	background-color: aliceblue;
+}
+
+/* チャット本体 */
+.chat-log {
+	height: 300px;
+	overflow-y: auto;
+	border: 1px solid #ccc;
+	padding: 1rem;
+}
+
+.chat-form{
+	border: 1px solid #ccc;
+	padding: 1rem;
+}
+
+.chat-message {
+    font-size: 0.85rem;
+	margin-bottom: 1rem;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 0.5rem;
+}
+.chat-name {
+	font-weight: bold;
+	display: inline-block;
+	margin-right: 0.5rem;
+}
+.chat-text {
+	display: inline;
+}
+
+#lightalk-chat label{
+	font-size: 0.85rem;
+	padding: 0.5rem;
+}
+#lightalk-chat input[name="user_name"]{
+	width: 50%;
+	padding: 0.5rem;
+}
+#lightalk-chat input[name="user_color"]{
+
+}
+#lightalk-chat input[name="chat_message"]{
+	width: 100%;
+	padding: 0.5rem;
+	display: block;
+}
+#lightalk-chat button[type="submit"]{
+	padding: 0.5rem 2.5rem;
+}
+
+.warning-text{
+	font-size: 0.65rem;
+}
