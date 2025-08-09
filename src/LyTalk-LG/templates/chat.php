@@ -20,4 +20,9 @@
     </form>
 </div>
 
-<div id="visible-btn">▲ チャットを閉じる</div>
+<!-- チャットウインドウ開閉ボタン -->
+<div id="visible-btn">▲ チャットを開く</div>
+
+<!-- 音鳴らす用 -->
+<audio id="chat-sound" src="<?php echo esc_url( plugin_dir_url( dirname(__FILE__) ) . 'assets/audio/notification-sound.mp3' ); ?>" preload="auto"></audio>
+

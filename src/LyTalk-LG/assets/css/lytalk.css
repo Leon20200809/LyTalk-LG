@@ -49,6 +49,7 @@
 }
 
 #lightalk-chat{
+	display: none;
 	position: fixed;
 	right: 10px; bottom: 100px;
 	z-index: 100;

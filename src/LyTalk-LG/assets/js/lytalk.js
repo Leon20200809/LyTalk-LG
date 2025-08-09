@@ -1,4 +1,41 @@
 jQuery(document).ready(function ($) {
+
+	let interacted = false;
+	window.addEventListener('click', () => interacted = true, { once:true });
+
+	if (interacted) {
+		document.getElementById('chat-sound').play().catch(err => console.warn(err));
+	}
+
+	/*** 最新メッセージ確認したら音で通知 ***/
+	let lastId = null;
+
+	function checkMessages(res) {
+		if (!res.success || res.data.length === 0) return;
+
+		// 最新のメッセージID
+		const latestId = res.data[res.data.length - 1].id;
+
+		// 初回ロードは基準セットだけ（音は鳴らさない）
+		if (lastId === null) {
+			lastId = latestId;
+			return;
+		}
+
+		console.log("lastId:" + lastId);
+		console.log("latestId:" + latestId);
+		// 新着があれば一回だけ鳴らす
+		if (latestId > lastId) {
+			const el = document.getElementById('chat-sound');
+			// play() は Promise 返すので失敗しても無視
+			el.play().catch(() => {});
+		}
+
+		// 受信した中で最大IDに更新（連続新着にも強い）
+		lastId = Math.max(lastId, latestId);
+		
+	}
+
 	/*** 😀 表示/非表示 ***/
 	$("#visible-btn").on("click", function(){
 		$("#lightalk-chat").slideToggle();
@@ -19,8 +56,6 @@ jQuery(document).ready(function ($) {
 		const message = $("#chat-message").val();
 
 		if (!name || !message) return;
-
-		console.log(name);
 
 		$.post(
 			// ← jQueryのPOST送信（非同期Ajax）を開始
@@ -56,8 +91,12 @@ jQuery(document).ready(function ($) {
 				nonce: lytalk_data.nonce, // セキュリティトークン（正規のJSからのリクエストかを検証）
 			},
 			success: function (res) {
+				// console.table(res);
 				// 通信成功時のコールバック関数（PHPが返したJSONが入る）
 				if (res.success) {
+
+					checkMessages(res);
+
 					// PHPが wp_send_json_success() で返した場合
 					$("#chat-log").html("");
 					res.data.forEach(appendMessage); // 受け取ったメッセージ配列を順に描画（appendMessage関数を使って）
@@ -94,11 +133,14 @@ jQuery(document).ready(function ($) {
 
 	/*** 表示処理 ***/
 	function appendMessage(msg) {
-        console.table(msg);
+
+		// created_at が存在するか確認する
+    	const createdAt = msg.created_at ? escapeHTML(msg.created_at.slice(0, 16)) : '';
+
 		const html = `
             <div id="message-${msg.id}" class="chat-message">
 				<span class="ccreated-at" style="color:${escapeHTML(msg.user_color)}">
-					${escapeHTML(msg.created_at.slice(0, 16))}
+					${createdAt}
 				</span><br>
                 <span class="chat-name" style="color:${escapeHTML(msg.user_color)}">
 				${msg.is_admin ? '[管理者]' : ''}${escapeHTML(msg.user_name)}:
@@ -123,4 +165,5 @@ jQuery(document).ready(function ($) {
     return escapeHTML(str).replace(/\n/g, "<br>");
     }
 
+	
 });
